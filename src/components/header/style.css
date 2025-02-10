@@ -1,0 +1,15 @@
+.header {
+  width: 100vw;
+  height: 5vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.header_icon {
+  color: red;
+}
+
+.header_title {
+  margin: 5px;
+}
