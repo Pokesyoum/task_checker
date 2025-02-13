@@ -1,4 +1,5 @@
 import React from "react";
+import { Task } from "../task/index.tsx";
 import MenuIcon from "@mui/icons-material/Menu"
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import "./style.css";
@@ -14,7 +15,11 @@ export const ToDoList = () => {
           fontSize="small"
         />
       </div>
-      <div className="task_field"></div>
+      <div className="task_field">
+        <Task />
+        <Task />
+        <Task />
+      </div>
     </div>
   );
 };
