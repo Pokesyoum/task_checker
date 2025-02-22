@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Modal from "react-modal";
+import { GenreBody } from "./genreBody.tsx";
 
 interface Props {
   handleClose: () => void;
@@ -31,6 +32,7 @@ export const FormModal = (props: Props) => {
         isOpen={props.isOpen}
         onRequestClose={props.handleClose}
         style={customStyles}>
+          <GenreBody />
       </Modal>
     </div>
   );
