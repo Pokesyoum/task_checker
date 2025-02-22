@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Modal from "react-modal";
 import { GenreBody } from "./genreBody.tsx";
+import { TaskBody } from "./taskBody.tsx";
 
 interface Props {
   handleClose: () => void;
@@ -26,7 +27,7 @@ const customStyles = {
 const renderBody = (body : string) => {
   switch (body) {
     case "taskBody":
-      return "";
+      return <TaskBody />;
     case "genreBody":
       return <GenreBody />;
     default:
