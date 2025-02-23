@@ -5,6 +5,7 @@ import { Select } from "../../components/select/index.tsx";
 import { ToDoList } from "../../components/toDoList/index.tsx";
 import { FormModal } from "../../components/modal/index.tsx";
 import { taskRequest } from "../../requests/taskRequest.ts";
+import { genreRequest } from "../../requests/genreRequest.ts";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 
 export const Home = () => {
@@ -17,12 +18,17 @@ export const Home = () => {
   };
 
   useEffect(() => {
+    const showGenres = async () => {
+      const response = await genreRequest("fetchGenres");
+      console.log(response)
+    };
     const showTasks = async () => {
       const response = await taskRequest("fetchTasks");
       console.log(response)
-    }
+    };
+    showGenres();
     showTasks()
-  }, [])
+  }, []);
 
   return <div className="main">
     <Header />
