@@ -4,6 +4,7 @@ import { GenreType } from "../interfaces/GenreType";
 
 export type dataAction = {
   type: "tasksUpdate" | "genresUpdate";
+  payload: { task?: TaskType[]; genre?: GenreType[] };
 };
 
 export type Data = {
@@ -20,21 +21,9 @@ export const useDataReducer = (): any => {
   const reducer = (state: Data, action: dataAction) => {
     switch (action.type) {
       case "tasksUpdate":
-        state.tasksData = [{
-          id: 1,
-          name: "タスクA",
-          explanation: "テストのタスクです",
-          deadlineData: "",
-          status: 1,
-          genreId: 1
-        }]
-        return state;
+        return { ...state, tasksData: action.payload.task || state.tasksData };
       case "genresUpdate":
-        state.genresData = [{
-          id: 1,
-          name: "ジャンルA"
-        }]
-        return state;
+        return { ...state, genresData: action.payload.genre || state.genresData};
     }
   };
 
