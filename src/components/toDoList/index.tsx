@@ -1,11 +1,16 @@
 import React, { useState } from "react";
 import { Task } from "../task/index.tsx";
 import { FormModal } from "../modal/index.tsx";
+import { TaskType } from "../../interfaces/TaskType.ts";
 import MenuIcon from "@mui/icons-material/Menu"
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import "./style.css";
 
-export const ToDoList = () => {
+interface Props {
+  tasks: TaskType[];
+}
+
+export const ToDoList = (props: Props) => {
   const [isOpen, setIsOpen] = useState(false);
     const handleOpen = () => {
       setIsOpen(true);
@@ -30,9 +35,9 @@ export const ToDoList = () => {
         />
       </div>
       <div className="task_field">
-        <Task />
-        <Task />
-        <Task />
+        {props.tasks.map((task: TaskType) => {
+            return <Task task={task} key={task.id} />;
+        })}
       </div>
     </div>
   );

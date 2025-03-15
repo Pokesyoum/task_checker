@@ -32,7 +32,7 @@ export const Home = () => {
   return <div className="main">
     <Header />
     <div className="genre">
-      <Select genres = {data.genresData} />
+      <Select genres={data.genresData} />
       <AddCircleOutlineIcon 
         className="add_circle_outline_icon"
         font-size="default"
@@ -45,7 +45,7 @@ export const Home = () => {
       />
     </div>
     <div className="contents">
-      <ToDoList />
+      <ToDoList tasks={data.tasksData} />
     </div>
   </div>;
 };
