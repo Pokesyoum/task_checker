@@ -32,7 +32,7 @@ export const Home = () => {
   return <div className="main">
     <Header />
     <div className="genre">
-      <Select />
+      <Select genres = {data.genresData} />
       <AddCircleOutlineIcon 
         className="add_circle_outline_icon"
         font-size="default"
