@@ -7,6 +7,7 @@ import { FormModal } from "../../components/modal/index.tsx";
 import { taskRequest } from "../../requests/taskRequest.ts";
 import { genreRequest } from "../../requests/genreRequest.ts";
 import { Data, dataAction, useDataReducer } from "../../hooks/useDataReducer.ts";
+import { useFilterTasks } from "../../hooks/useFilterTasks.ts";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 
 type dataContextType = {
@@ -21,6 +22,8 @@ export const DataContext = React.createContext<dataContextType>(
 export const Home = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [data, dispatch] = useDataReducer();
+  const [selectGenreId, setSelectGenreId] = useState<number>(0)
+  const [filteredTasks, tasksDispatch] = useFilterTasks();
   const handleOpen = () => {
     setIsOpen(true);
   };
@@ -37,6 +40,13 @@ export const Home = () => {
     };
     fetchData();
   }, []);
+
+  useEffect(() => {
+    tasksDispatch({
+      type: "filterTask",
+      payload: { tasks: data.tasksData, genreId: selectGenreId },
+    });
+  }, [data.tasksData]);
 
   return (
   <DataContext.Provider value={{ data, dispatch }}>
@@ -56,7 +66,7 @@ export const Home = () => {
         />
       </div>
       <div className="contents">
-        <ToDoList tasks={data.tasksData} />
+        <ToDoList tasks={filteredTasks} />
       </div>
     </div>
   </DataContext.Provider>
