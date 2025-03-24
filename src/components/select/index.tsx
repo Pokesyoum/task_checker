@@ -4,6 +4,7 @@ import "./style.css"
 
 interface Props {
   genres?: GenreType[];
+  changeSelect?: (event: React.ChangeEvent<HTMLSelectElement>) => void;
 }
 
 const renderOption = (props: Props) => {
@@ -20,7 +21,7 @@ const renderOption = (props: Props) => {
 export const Select = (props: Props) => {
   return (
     <div>
-      <select className="select">
+      <select className="select" onChange={props.changeSelect}>
         {!props.genres && <option value={0}></option>}
         {renderOption(props)}
       </select>
