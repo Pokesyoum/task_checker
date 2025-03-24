@@ -8,6 +8,7 @@ import { taskRequest } from "../../requests/taskRequest.ts";
 import { genreRequest } from "../../requests/genreRequest.ts";
 import { Data, dataAction, useDataReducer } from "../../hooks/useDataReducer.ts";
 import { useFilterTasks } from "../../hooks/useFilterTasks.ts";
+import { TaskType } from "../../interfaces/TaskType.ts";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 
 type dataContextType = {
@@ -24,6 +25,15 @@ export const Home = () => {
   const [data, dispatch] = useDataReducer();
   const [selectGenreId, setSelectGenreId] = useState<number>(0)
   const [filteredTasks, tasksDispatch] = useFilterTasks();
+  const taskStatusElements: string[] = [
+    "ToDo",
+    "Pending",
+    "Doing(Today)",
+    "WIP",
+    "Check",
+    "Done",
+  ];
+
   const handleOpen = () => {
     setIsOpen(true);
   };
@@ -70,7 +80,14 @@ export const Home = () => {
         />
       </div>
       <div className="contents">
-        <ToDoList tasks={filteredTasks} />
+        {taskStatusElements.map((element) => {
+          const tasks = filteredTasks.filter((filteredTasks: TaskType) => {
+            return (
+              filteredTasks.status === taskStatusElements.indexOf(element)
+            );
+          });
+          return <ToDoList title={element} tasks={tasks} key={element} />;
+        })}
       </div>
     </div>
   </DataContext.Provider>
