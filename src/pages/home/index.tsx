@@ -14,7 +14,7 @@ import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 type dataContextType = {
   data: Data;
   dispatch: ({ type, payload }: dataAction) => void;
-}
+};
 
 export const DataContext = React.createContext<dataContextType>(
   {} as dataContextType
@@ -28,7 +28,7 @@ export const Home = () => {
   const taskStatusElements: string[] = [
     "ToDo",
     "Pending",
-    "Doing(Today)",
+    "Doing(ToDay)",
     "WIP",
     "Check",
     "Done",
@@ -81,9 +81,9 @@ export const Home = () => {
       </div>
       <div className="contents">
         {taskStatusElements.map((element) => {
-          const tasks = filteredTasks.filter((filteredTasks: TaskType) => {
+          const tasks = filteredTasks.filter((filteredTask: TaskType) => {
             return (
-              filteredTasks.status === taskStatusElements.indexOf(element)
+              filteredTask.status === taskStatusElements.indexOf(element)
             );
           });
           return <ToDoList title={element} tasks={tasks} key={element} />;
