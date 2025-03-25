@@ -1,7 +1,7 @@
 import axiosBase from "axios";
 import { GenreType } from "../interfaces/GenreType";
 
-type action = "fetchGenres" | "createGenres";
+type action = "fetchGenres" | "createGenres" | "deleteGenres";
 
 type parameter = { data: GenreType };
 
@@ -16,6 +16,9 @@ export const genreRequest: (action: action, parameter?: parameter) => any = asyn
       case "createGenres":
         const createGenres = await api.post("/", "Hello World");
         return createGenres.data;
+      case "deleteGenres":
+        const deleteGenres = await api.delete(`/${parameter.data.id}`);
+        return deleteGenres.data;
       default:
         return null;
       }

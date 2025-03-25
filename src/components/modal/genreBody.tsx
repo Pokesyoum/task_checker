@@ -29,6 +29,17 @@ export const GenreBody = () => {
     }
   };
 
+  const onClickDelete = async (genre: GenreType) => {
+    try {
+      const genres: GenreType[] = await genreRequest("deleteGenres", {
+        data: genre,
+      });
+      dispatch({ type: "genresUpdate", payload: { genre: genres } });
+    } catch (err: any) {
+      console.log(err.message);
+    }
+  };
+
   return (
     <div className="modal_body">
       <h2 className="input_menu">ジャンル編集</h2>
