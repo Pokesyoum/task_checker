@@ -1,11 +1,34 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { DataContext } from "../../pages/home/index.tsx";
 import { GenreType } from "../../interfaces/GenreType";
+import { genreRequest } from "../../requests/genreRequest.ts";
 import CancelIcon from "@mui/icons-material/Cancel";
 import "./style.css";
 
 export const GenreBody = () => {
-  const { data } = useContext(DataContext);
+  const { data, dispatch } = useContext(DataContext);
+  const [genreName, setGenreName] = useState<string>("");
+
+  const changeGenreName = (val: any) => {
+    setGenreName(val.target.value);
+  };
+
+  const onClickSubmit = async () => {
+    const newData: GenreType = {
+      id: 0,
+      name: genreName,
+    };
+    try {
+      const genres: GenreType[] = await genreRequest("createGenres", {
+        data: newData,
+      });
+      dispatch({ type: "genresUpdate", payload: { genre: genres } });
+      setGenreName("");
+    } catch (err: any) {
+      console.log(err.message);
+    }
+  };
+
   return (
     <div className="modal_body">
       <h2 className="input_menu">ジャンル編集</h2>
@@ -19,8 +42,13 @@ export const GenreBody = () => {
           );
         })}
       </ul>
-      <input type="text" />
-      <input className="input_submit" type="button" value="追加" />
+      <input type="text" value={genreName} onChange={changeGenreName} />
+      <input
+        className="input_submit"
+        onClick={onClickSubmit}
+        type="button"
+        value="追加"
+      />
     </div>
   );
 };
