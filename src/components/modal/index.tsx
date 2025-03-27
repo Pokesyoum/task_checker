@@ -2,11 +2,13 @@ import React, { useState } from "react";
 import Modal from "react-modal";
 import { GenreBody } from "./genreBody.tsx";
 import { TaskBody } from "./taskBody.tsx";
+import { TaskType } from "../../interfaces/TaskType.ts";
 
 interface Props {
   handleClose: () => void;
   isOpen: boolean;
   body: string;
+  task?: TaskType;
 }
 
 const customStyles = {
@@ -24,10 +26,10 @@ const customStyles = {
   },
 };
 
-const renderBody = (body : string, handleClose: () => void) => {
+const renderBody = (body : string, handleClose: () => void, task?: TaskType) => {
   switch (body) {
     case "taskBody":
-      return <TaskBody handleClose={handleClose} />;
+      return <TaskBody handleClose={handleClose} task={task} />;
     case "genreBody":
       return <GenreBody />;
     default:
@@ -45,7 +47,7 @@ export const FormModal = (props: Props) => {
         isOpen={props.isOpen}
         onRequestClose={props.handleClose}
         style={customStyles}>
-          {renderBody(props.body, props.handleClose)}
+          {renderBody(props.body, props.handleClose, props.task)}
       </Modal>
     </div>
   );

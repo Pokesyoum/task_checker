@@ -6,16 +6,25 @@ import { DataContext } from "../../pages/home/index.tsx";
 import "./style.css";
 
 interface Props {
+  task?: TaskType;
   handleClose: () => void;
   initialValue?: number;
 }
 
 export const TaskBody = (props: Props) => {
   const { data, dispatch } = useContext(DataContext);
-  const [title, setTitle] = useState<string>("");
-  const [genreId, setGenreId] = useState<number>(1);
-  const [explanation, setExplanation] = useState<string>("");
-  const [deadlineDate, setDeadlineDate] = useState<string>("");
+  const [title, setTitle] = useState<string>(
+    (props.task && props.task.name) || ""
+  );
+  const [genreId, setGenreId] = useState<number>(
+    (props.task && props.task.genreId) || 1
+  );
+  const [explanation, setExplanation] = useState<string>(
+    (props.task && props.task.explanation) || ""
+  );
+  const [deadlineDate, setDeadlineDate] = useState<string>(
+    (props.task && props.task.deadlineDate) || ""
+  );
 
   const handleChangeGenre = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setGenreId(Number(event.target.value));
@@ -38,21 +47,32 @@ export const TaskBody = (props: Props) => {
   };
 
   const onclickSubmit = async () => {
-    const newData = {
-      id: 0,
+    const requestData = {
+      id: (props.task && props.task.id) || 0,
       name: title,
       genreId: genreId,
       explanation: explanation,
       deadlineDate: deadlineDate,
-      status: 0,
+      status: (props.task && props.task.status) || 0,
     };
-    try {
-      const tasks: TaskType[] = await taskRequest("createTasks", {
-        data: newData,
-      });
-      dispatch({ type: "tasksUpdate", payload: { task: tasks } });
-    } catch (err: any) {
-      console.log(err.message);
+    if (props.task !== undefined) {
+      try {
+        const tasks: TaskType[] = await taskRequest("updateTasks", {
+          data: requestData,
+        });
+        dispatch({ type: "tasksUpdate", payload: { task: tasks } });
+      } catch (err: any) {
+        console.log(err.message)
+      }
+    } else {
+      try {
+        const tasks: TaskType[] = await taskRequest("createTasks", {
+          data: requestData,
+        });
+        dispatch({ type: "tasksUpdate", payload: { task: tasks } });
+      } catch (err: any) {
+        console.log(err.message);
+      }
     }
     props.handleClose();
   };
