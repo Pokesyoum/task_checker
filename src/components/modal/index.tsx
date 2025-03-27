@@ -24,10 +24,10 @@ const customStyles = {
   },
 };
 
-const renderBody = (body : string) => {
+const renderBody = (body : string, handleClose: () => void) => {
   switch (body) {
     case "taskBody":
-      return <TaskBody />;
+      return <TaskBody handleClose={handleClose} />;
     case "genreBody":
       return <GenreBody />;
     default:
@@ -45,7 +45,7 @@ export const FormModal = (props: Props) => {
         isOpen={props.isOpen}
         onRequestClose={props.handleClose}
         style={customStyles}>
-          {renderBody(props.body)}
+          {renderBody(props.body, props.handleClose)}
       </Modal>
     </div>
   );
