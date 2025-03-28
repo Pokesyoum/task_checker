@@ -77,6 +77,20 @@ export const TaskBody = (props: Props) => {
     props.handleClose();
   };
 
+  const handleOnDelete = async() => {
+    try {
+      if (props.task) {
+        const tasks: TaskType[] = await taskRequest("deleteTasks", {
+          data: props.task
+        });
+        dispatch({ type: "tasksUpdate", payload: { task: tasks } });
+      }
+      props.handleClose();
+    } catch (err: any) {
+      console.log(err.message);
+    }
+  };
+
   return (
     <form className="modal_body">
       <h2 className="input_menu">タスクを追加</h2>
@@ -107,6 +121,11 @@ export const TaskBody = (props: Props) => {
         value="送信"
         onClick={onclickSubmit}
       />
+      { props.task && (
+        <button className="button delete_button" type="button" onClick={handleOnDelete} >
+          このタスクを削除する
+        </button>
+      )}
     </form>
   );
 };
