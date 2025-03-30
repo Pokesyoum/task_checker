@@ -1,17 +1,64 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import { Select } from "../select/index.tsx";
+import { TaskType } from "../../interfaces/TaskType.ts";
+import { DataContext } from "../../pages/home/index.tsx";
 import "./style.css";
+import { taskRequest } from "../../requests/taskRequest.ts";
 
-export const Task = () => {
+interface Props {
+  task: TaskType
+  getMatchTask: (id: number) => void;
+}
+
+export const Task = (props: Props) => {
+  const { dispatch } = useContext(DataContext);
+  const [status, setStatus] = useState<number>(props.task.status);
+  const listElements: string[] = [
+    "ToDo",
+    "Pending",
+    "Doing(Today)",
+    "WIP",
+    "Check",
+    "Done",
+  ];
+
+  const changeStatus = async (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const val = Number(event.target.value);
+    try {
+      const tasks: TaskType[] = await taskRequest("updateStatus", {
+        data: props.task,
+        status: val,
+      });
+      dispatch({ type: "tasksUpdate", payload: { task: tasks } });
+      setStatus(val);
+    } catch (err: any) {
+      console.log(err.message);
+    }
+  };
   return (
-    <div className="task" style={{ backgroundColor: "white" }}>
-      <span className="task_date">2025-02-12</span>
-      <div className="task_text_contents">
-        <h3 className="task_title">タスク名</h3>
-        <p className="task_sentence">タスクの説明</p>
+    <div
+      className="task"
+      style={{
+        backgroundColor:
+        new Date(props.task.deadlineDate) > new Date()
+          ? "white"
+          : "rgb(250, 194, 194)",
+      }}
+    >
+      <span className="task_date">{props.task.deadlineDate}</span>
+      <div
+        className="task_text_contents"
+        onClick={() => props.getMatchTask(props.task.id)}
+      >
+        <h3 className="task_title">{props.task.name}</h3>
+        <p className="task_sentence">{props.task.explanation}</p>
       </div>
       <div className="task_input_contents">
-        <Select />
+        <Select 
+          optionElements={listElements}
+          changeSelect={changeStatus}
+          initialValue={status}
+        />
       </div>
     </div>
   );
